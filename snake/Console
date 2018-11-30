@@ -1,0 +1,20 @@
+#ifndef _CONSOLE_
+#define _CONSOLE_
+
+
+
+#include "Console.h"
+// #include "ConsoleKeyEvent.h"
+// #include "ConsoleKeyReader.h"
+// #include "ConsoleWriter.h"
+//		#include "ConsoleImage.h"
+//			#include "ConsoleColor.h"
+
+// #include "ConsoleKeyFilter.h"
+#include "ConsoleKeyFilterDown.h"
+#include "ConsoleKeyFilterUp.h"
+#include "ConsoleKeyFilterAny.h"
+#include "ConsoleKeyFilterModifiers.h"
+
+
+#endif _CONSOLE_

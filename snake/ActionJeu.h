@@ -11,11 +11,16 @@ class ActionJeu
 private:
 	int mToucheClavier;
 	Serpent mSalazar;
-	Pomme mPomme;
+	Pomme mPommeRouge;
+	Pomme mPommeVerte;
+	int mProbabilitePommeVerte;
+	bool mAfficherPommeVerte;
+	Pomme mPommeNoire;
 	bool partieEnCours;
 	int mCompteur;
 	int mEtat;
 	AireDeJeu surfaceJeu;
+
 
 	//Fonction
 	void obtenirClavier();

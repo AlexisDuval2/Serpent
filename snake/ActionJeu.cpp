@@ -4,8 +4,6 @@
 #include "Console"
 #include "ElapsedTimer.h"
 
-
-
 using namespace std;
 
 ActionJeu::ActionJeu()
@@ -19,22 +17,29 @@ ActionJeu::~ActionJeu()
 
 void ActionJeu::lancer()
 {
+	// mettre position aléatoire pomme rouge
+	Point temp(mPommeRouge.aleatoire(6, 54), mPommeRouge.aleatoire(6, 54));
+	mPommeRouge.setPosition(temp);
 
-		ElapsedTimer<> chronometre;
-		chronometre.start();
-		partieEnCours = true;
+	// patch temporaire...
+	// mettre position impossible pour pomme verte
+	Point impossible(2,2);
+	mPommeVerte.setPosition(impossible);
 
-		while (partieEnCours) {
-			if (chronometre.elapsedSeconds() >= 0.1) {
-				obtenirClavier();
-				partieEnCours = traiter(chronometre.restartSeconds());
-				afficherJeu();
-			}
+	// mettre couleur verte à la pomme verte
+	mPommeVerte.setCouleur(ConsoleColor::by + ConsoleColor::tg);
 
+	ElapsedTimer<> chronometre;
+	chronometre.start();
+	partieEnCours = true;
+
+	while (partieEnCours) {
+		if (chronometre.elapsedSeconds() >= 0.1) {
+			obtenirClavier();
+			partieEnCours = traiter(chronometre.restartSeconds());
+			afficherJeu();
 		}
-
-
-
+	}
 }
 
 void ActionJeu::obtenirClavier()
@@ -81,18 +86,18 @@ void ActionJeu::obtenirClavier()
 			mToucheClavier = 66;
 		}
 	}
-
-	
 }
 
 bool ActionJeu::traiter(double tempsEcoule)
 {
+	if (mSalazar.tete().x() == mPommeRouge.position().x() && mSalazar.tete().y() == mPommeRouge.position().y()
+		|| mSalazar.tete().x() == mPommeVerte.position().x() && mSalazar.tete().y() == mPommeVerte.position().y()) {
 
-	
-
-	if (mSalazar.tete().x() == mPomme.position().x() && mSalazar.tete().y() == mPomme.position().y())
-	{
 		mSalazar.setMange(true);
+
+		if (mSalazar.tete().x() == mPommeVerte.position().x() && mSalazar.tete().y() == mPommeVerte.position().y()) {
+			mCompteur += 4; // pomme verte vaut 4 points de plus
+		}
 	}
 
 	if (mToucheClavier == 37)
@@ -135,30 +140,38 @@ bool ActionJeu::traiter(double tempsEcoule)
 		mEtat = -1; //Game Over
 	}
 
-	int compteur = 0;
+	int compteurTemp = 0;
 	for (Point & p : mSalazar.corps())
 	{
-		if (compteur != 0) {
+		if (compteurTemp != 0) {
 			if (mSalazar.tete().x() == p.x() && mSalazar.tete().y() == p.y()) {
 				return false;
 			}
 		}
-		compteur++;
+		compteurTemp++;
 	}
 
 	if (mSalazar.mange() == true)
 	{
 		mCompteur += 1;
-		mSalazar.ajouterPoint(mPomme.position());
+
+		// le serpent grandit
+		mSalazar.ajouterPoint(mPommeRouge.position());
 		mSalazar.setMange(false);
 
-		Point temp(mPomme.aleatoire(5, 55), mPomme.aleatoire(5, 55));
-		mPomme.setPosition(temp);
+		// 1 chance sur 5 d'avoir une pomme verte
+		mProbabilitePommeVerte = mPommeVerte.aleatoire(1, 5);
+		if (mProbabilitePommeVerte == 1) {
+			Point temp(mPommeVerte.aleatoire(6, 54), mPommeVerte.aleatoire(6, 54));
+			mPommeVerte.setPosition(temp);
+			mAfficherPommeVerte = true;
+		}
+		else {
+			Point temp(mPommeRouge.aleatoire(6, 54), mPommeRouge.aleatoire(6, 54));
+			mPommeRouge.setPosition(temp);
+			mAfficherPommeVerte = false;
+		}
 	}
-
-
-
-
 
 	return true;
 }
@@ -182,8 +195,6 @@ void ActionJeu::afficherJeu()
 	{
 		ConsoleWriter & writer{ Console::getInstance().writer() };
 
-
-
 		writer.createImage("background");
 
 		size_t a{ 5 };
@@ -192,23 +203,26 @@ void ActionJeu::afficherJeu()
 		size_t d{ 16 };
 		size_t e{ 22 };
 
-
-
 		writer.image("background").fill(a, a, b, b, char(219), ConsoleColor::by + ConsoleColor::ty);
 		writer.image("background").fill(e, c, d, a, char(219), ConsoleColor::bw + ConsoleColor::tw);
 		writer.image("background").drawText(e + 1, c + 2, "Point: " + to_string(mCompteur), ConsoleColor::bw + ConsoleColor::tk, true);
 		writer.createImage("imageJeu");
 		writer.push("background", "imageJeu");
 
-		writer.image("imageJeu").drawPoint(mPomme.position().x(), mPomme.position().y(), mPomme.dessin(), mPomme.couleur());
+		// dessiner pomme rouge ou pomme verte
+		if (mAfficherPommeVerte) {
+			writer.image("imageJeu").drawPoint(mPommeVerte.position().x(), mPommeVerte.position().y(), mPommeVerte.dessin(), mPommeVerte.couleur());
+		}
+		else {
+			writer.image("imageJeu").drawPoint(mPommeRouge.position().x(), mPommeRouge.position().y(), mPommeRouge.dessin(), mPommeRouge.couleur());
+		}
 
+		// dessiner serpent
 		for (Point & p : mSalazar.corps())
 		{
 			writer.image("imageJeu").drawPoint(p.x(), p.y(), mSalazar.forme(), mSalazar.couleur());
 			writer.push("imageJeu");
 		}
-
-
 
 		if (partieEnCours == false)
 		{

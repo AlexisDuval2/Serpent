@@ -4,6 +4,7 @@
 
 #include"Serpent.h"
 #include"Pomme.h"
+#include"AireDeJeu.h"
 
 class ActionJeu
 {
@@ -13,6 +14,8 @@ private:
 	Pomme mPomme;
 	bool partieEnCours;
 	int mCompteur;
+	int mEtat;
+	AireDeJeu surfaceJeu;
 
 	//Fonction
 	void obtenirClavier();

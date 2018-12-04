@@ -1,4 +1,9 @@
-#pragma once
+#ifndef AIRDEJEU_H
+#define AIRDEJEU_H
+
+#include"ConsoleWriter.h"
+#include"AireDeJeu.h"
+
 class AireDeJeu
 {
 public:
@@ -11,12 +16,19 @@ public:
 	size_t hauteurJouable();
 
 	//void afficherAirJeu();
-	//void afficherGameOver;
+	void afficherGameOver();
+	void afficherMenuEntre();
+	void afficherInstruction();
 
 private:
 	size_t mLargeur;
 	size_t mHauteur;
 	size_t mLargeurJouable;
 	size_t mHauteurJouable;
+
+	size_t x;
+	size_t y;
 };
+
+#endif //AIRDEJEU_H
 

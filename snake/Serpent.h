@@ -41,6 +41,7 @@ public:
 	void setMange(bool mange);
 	void setDirection(char direction);
 
+
 	//Fonction
 	void ajouterPoint(Point a);
 	//Bouge

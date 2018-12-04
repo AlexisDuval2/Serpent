@@ -1,12 +1,17 @@
 #include "AireDeJeu.h"
+#include"ConsoleWriter.h"
+#include"Console.h"
+#include<string>
 
-
+using namespace std;
 
 AireDeJeu::AireDeJeu()
 	:	mLargeur{60},
 		mHauteur{ 60 },
 		mLargeurJouable{ 50 },
-		mHauteurJouable{ 50 }
+		mHauteurJouable{ 50 },
+		x{ (mLargeur - mLargeurJouable) / 2 },
+		y{(mHauteur - mHauteurJouable) / 2}
 {
 }
 
@@ -33,4 +38,84 @@ size_t AireDeJeu::largeurJouable()
 size_t AireDeJeu::hauteurJouable()
 {
 	return mHauteurJouable;
+}
+
+void AireDeJeu::afficherGameOver()
+{
+	ConsoleWriter & writer{ Console::getInstance().writer() };
+	size_t px{ 21 };
+	size_t py{ 28 };
+	size_t width{ 18 };
+	size_t heigth{ 5 };
+
+	writer.createImage("finDePartie");
+	writer.image("finDePartie").fill(px, py, width, heigth, char(219), ConsoleColor::by + ConsoleColor::ty);
+	writer.image("finDePartie").drawText(px + 4, py + 2, "GAME OVER!", ConsoleColor::by + ConsoleColor::tk, true);
+	writer.push("finDePartie");
+}
+
+void AireDeJeu::afficherMenuEntre()
+{
+	ConsoleWriter & writer{ Console::getInstance().writer() };
+
+	string text1{ "Bienvenue" };
+	string text2{ "Jouer (Espace)" };
+	string text3{ "Instruction (i)" };
+	string text4{ "Quitter (q)" };
+	size_t xTexte = (mLargeur - text1.size()) / 2;
+	size_t yTexte = mHauteurJouable / 2;
+		
+	writer.createImage("bienvenu");
+	writer.image("bienvenu").fill(x, y, mLargeurJouable, mHauteurJouable, char(219), ConsoleColor::bb + ConsoleColor::tb);
+	writer.image("bienvenu").drawText(xTexte, yTexte, text1, ConsoleColor::bb + ConsoleColor::tW);
+	writer.image("bienvenu").drawText((mLargeur - text2.size()) / 2, yTexte+3 , text2, ConsoleColor::bb + ConsoleColor::tW);
+	writer.image("bienvenu").drawText((mLargeur - text3.size()) / 2, yTexte+4, text3, ConsoleColor::bb + ConsoleColor::tW);
+	writer.image("bienvenu").drawText((mLargeur - text4.size()) / 2, yTexte+5 , text4, ConsoleColor::bb + ConsoleColor::tW);
+	writer.push("bienvenu");
+
+
+
+}
+
+void AireDeJeu::afficherInstruction()
+{
+	ConsoleWriter & writer{ Console::getInstance().writer() };
+
+	string texte1{ "Instruction" };
+	string texte2{ "1. Utiliser les fl""\x8A""ches pour d\x82placer Salazar" };
+	string texte3{ "2. Manger les pommes pour récolt\x82 des points" };
+	string texte33{ "   et devenir plus grand" };
+	string texte4{ "3. Attention! Vous ne pouvez pas toucher les" };
+	string texte44{ "   limites du carr\x82 de sable!" };
+	string texte5{ "4. Attention! Vous ne pouvez pas" };
+	string texte55{ "   vous manger vous m\x88me" };
+	string texte6{ "5. A tout moment appuyer sur Q" };
+	string texte66{ "   pour quitter la partie" };
+
+	string texteRetour{ "Retour (B)" };
+	string texteJouer{ "Jouer (Espace)" };
+
+	size_t yTexte{ mHauteurJouable / 2 };
+	size_t xTexte{ 8 };
+
+	writer.createImage("instruction");
+	writer.createImage("background");
+	writer.push("background", "instruction");
+	writer.image("instruction").fill(x, y, mLargeurJouable, mHauteurJouable, char(219), ConsoleColor::bC + ConsoleColor::tC);
+	writer.image("instruction").drawText((mLargeur - texte1.size()) / 2, yTexte, texte1, ConsoleColor::bC + ConsoleColor::tK);
+	writer.image("instruction").drawText(xTexte, yTexte+2, texte2, ConsoleColor::bC + ConsoleColor::tK);
+	writer.image("instruction").drawText(xTexte, yTexte + 3, texte3, ConsoleColor::bC + ConsoleColor::tK);
+	writer.image("instruction").drawText(xTexte, yTexte + 4, texte33, ConsoleColor::bC + ConsoleColor::tK);
+	writer.image("instruction").drawText(xTexte, yTexte + 5, texte4, ConsoleColor::bC + ConsoleColor::tK);
+	writer.image("instruction").drawText(xTexte, yTexte + 6, texte44, ConsoleColor::bC + ConsoleColor::tK);
+	writer.image("instruction").drawText(xTexte, yTexte + 7, texte5, ConsoleColor::bC + ConsoleColor::tK);
+	writer.image("instruction").drawText(xTexte, yTexte + 8, texte55, ConsoleColor::bC + ConsoleColor::tK);
+	writer.image("instruction").drawText(xTexte, yTexte + 9, texte6, ConsoleColor::bC + ConsoleColor::tK);
+	writer.image("instruction").drawText(xTexte, yTexte + 10, texte66, ConsoleColor::bC + ConsoleColor::tK);
+
+	writer.image("instruction").drawText((mLargeur - texteRetour.size()) / 2, yTexte + 13, texteRetour, ConsoleColor::bC + ConsoleColor::tK);
+	writer.image("instruction").drawText((mLargeur - texteJouer.size()) / 2, yTexte + 14, texteJouer, ConsoleColor::bC + ConsoleColor::tK);
+
+	writer.push("instruction");
+
 }

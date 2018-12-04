@@ -17,7 +17,7 @@ public:
 	size_t largeurJouable();
 	size_t hauteurJouable();
 
-	void afficherAirJeu(Serpent &s, Pomme &p, int compteur);
+	void afficherAirJeu(Serpent &s, Pomme &pRouge, Pomme &pVerte, bool estPommeVerte, int compteur);
 	void afficherGameOver();
 	void afficherMenuEntre();
 	void afficherInstruction();

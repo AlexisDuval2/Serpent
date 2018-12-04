@@ -182,7 +182,7 @@ bool ActionJeu::traiter(double tempsEcoule)
 		mSalazar.setMange(false);
 
 		// 1 chance sur 5 d'avoir une pomme verte
-		mProbabilitePommeVerte = mPommeVerte.aleatoire(1, 5);
+		mProbabilitePommeVerte = mPommeVerte.aleatoire(1, 2);
 		if (mProbabilitePommeVerte == 1) {
 			Point temp(mPommeVerte.aleatoire(5, 54), mPommeVerte.aleatoire(5, 54));
 			mPommeVerte.setPosition(temp);
@@ -214,16 +214,7 @@ void ActionJeu::afficherJeu()
 	}
 	else // On joue!
 	{
-
-		// dessiner pomme rouge ou pomme verte
-		// if (mAfficherPommeVerte) {
-			// writer.image("imageJeu").drawPoint(mPommeVerte.position().x(), mPommeVerte.position().y(), mPommeVerte.dessin(), mPommeVerte.couleur());
-		// }
-		// else {
-			// writer.image("imageJeu").drawPoint(mPommeRouge.position().x(), mPommeRouge.position().y(), mPommeRouge.dessin(), mPommeRouge.couleur());
-		// }
-
-		surfaceJeu.afficherAirJeu(mSalazar, mPomme, mCompteur);
+		surfaceJeu.afficherAirJeu(mSalazar, mPommeRouge, mPommeVerte, mAfficherPommeVerte, mCompteur);
 	}
 }
 

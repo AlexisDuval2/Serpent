@@ -40,7 +40,7 @@ size_t AireDeJeu::hauteurJouable()
 	return mHauteurJouable;
 }
 
-void AireDeJeu::afficherAirJeu(Serpent &s, Pomme &p, int compteur)
+void AireDeJeu::afficherAirJeu(Serpent &s, Pomme &pRouge, Pomme &pVerte, bool estPommeVerte, int compteur)
 {
 	ConsoleWriter & writer{ Console::getInstance().writer() };
 
@@ -64,7 +64,15 @@ void AireDeJeu::afficherAirJeu(Serpent &s, Pomme &p, int compteur)
 	writer.createImage("imageJeu");
 	writer.push("background", "imageJeu");
 
-	writer.image("imageJeu").drawPoint(p.position().x(), p.position().y(), p.dessin(), p.couleur());
+	//writer.image("imageJeu").drawPoint(p.position().x(), p.position().y(), p.dessin(), p.couleur());
+
+	 // dessiner pomme rouge ou pomme verte
+	 if (estPommeVerte) {
+	 writer.image("imageJeu").drawPoint(pVerte.position().x(), pVerte.position().y(), pVerte.dessin(), pVerte.couleur());
+	 }
+	 else {
+	 writer.image("imageJeu").drawPoint(pRouge.position().x(), pRouge.position().y(), pRouge.dessin(), pRouge.couleur());
+	 }
 
 	for (Point & p : s.corps())
 	{

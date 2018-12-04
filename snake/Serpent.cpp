@@ -1,5 +1,4 @@
 
-
 #include "Serpent.h"
 
 Serpent::Serpent()
@@ -9,25 +8,23 @@ Serpent::Serpent()
 	mCorps{ mTete },
 	mCouleur{ ConsoleColor::bb + ConsoleColor::tg },
 	mForme{ char(219) },
-	mMange {false}
+	mMange{ false },
+	mDirection { 'X' }
 {
 }
-
 
 Serpent::~Serpent()
 {
 }
 
-
 void Serpent::bougeAGauche() {
 
-		Point tempo{ mTete };
-		tempo.setX(tempo.x() - 1);
-		mCorps.push_front(tempo);
-		mCorps.pop_back();
+	Point tempo{ mTete };
+	tempo.setX(tempo.x() - 1);
+	mCorps.push_front(tempo);
+	mCorps.pop_back();
 
-		mTete = tempo;
-	
+	mTete = tempo;
 }
 
 void Serpent::bougeADroite() {
@@ -38,10 +35,10 @@ void Serpent::bougeADroite() {
 	mCorps.pop_back();
 
 	mTete = tempo;
-	
 }
 
 void Serpent::bougeEnHaut() {
+
 	Point tempo{ mTete };
 	tempo.setY(tempo.y() - 1);
 	mCorps.push_front(tempo);
@@ -51,6 +48,7 @@ void Serpent::bougeEnHaut() {
 }
 
 void Serpent::bougeEnBas() {
+	
 	Point tempo{ mTete };
 	tempo.setY(tempo.y() + 1);
 	mCorps.push_front(tempo);
@@ -58,9 +56,6 @@ void Serpent::bougeEnBas() {
 
 	mTete = tempo;
 }
-
-
-
 
 // -------GETTER / Setter ------------//
 
@@ -83,6 +78,10 @@ std::list<Point> Serpent::corps() {
 	return mCorps;
 }
 
+char Serpent::direction() {
+	return mDirection;
+}
+
 bool Serpent::mange()
 {
 	return mMange;
@@ -98,8 +97,6 @@ void Serpent::ajouterPoint(Point a)
 void Serpent::setPosition(Point position) {
 	mTete = position;
 }
-
-
 
 
 void Serpent::setlongueur(int longueur) {
@@ -119,3 +116,9 @@ void Serpent::setMange(bool mange)
 {
 	mMange = mange;
 }
+
+void Serpent::setDirection(char direction) {
+	mDirection = direction;
+}
+
+

@@ -25,10 +25,7 @@ void ActionJeu::lancer()
 			partieEnCours = traiter(chronometre.restartSeconds());
 			afficherJeu();
 		}
-
 	}
-
-
 }
 
 void ActionJeu::obtenirClavier()
@@ -43,22 +40,21 @@ void ActionJeu::obtenirClavier()
 	reader.read(keyEvents);
 	//mToucheClavier = 0;
 
-	
-
 	for (auto event : keyEvents) {
-		if (event.keyV() == char(37)) {				//Si on a peser la fleche gauche
+		if (event.keyV() == char(37) && mSalazar.direction() != 'D') {
+			// Si on a pesé la flèche gauche
 			mToucheClavier = 37;
 		}
-
-		else if (event.keyV() == char(38)) {		//Si on a peser la flèche haut
+		else if (event.keyV() == char(38) && mSalazar.direction() != 'B') {
+			// Si on a pesé la flèche haut
 			mToucheClavier = 38;
 		}
-
-		else if (event.keyV() == char(39)) {		//Si on a peser la fleche droite
+		else if (event.keyV() == char(39) && mSalazar.direction() != 'G') {
+			// Si on a pesé la flèche droite
 			mToucheClavier = 39;
 		}
-
-		else if (event.keyV() == char(40)) {			//Si on a peser la fleche bas
+		else if (event.keyV() == char(40) && mSalazar.direction() != 'H') {
+			// Si on a pesé la flèche bas
 			mToucheClavier = 40;
 		}
 	}
@@ -77,24 +73,38 @@ bool ActionJeu::traiter(double tempsEcoule)
 	if (mToucheClavier == 37)
 	{
 		mSalazar.bougeAGauche();
-
+		mSalazar.setDirection('G');
 	}
 	else if (mToucheClavier == 38)
 	{
 		mSalazar.bougeEnHaut();
+		mSalazar.setDirection('H');
 	}
 	else if (mToucheClavier == 39)
 	{
 		mSalazar.bougeADroite();
+		mSalazar.setDirection('D');
 	}
 	else if (mToucheClavier == 40)
 	{
 		mSalazar.bougeEnBas();
+		mSalazar.setDirection('B');
 	}
 
 	if (mSalazar.tete().x() <= 4 || mSalazar.tete().x() >= 55 || mSalazar.tete().y() <= 4 || mSalazar.tete().y() >= 55)
 	{
 		return false;
+	}
+
+	int compteur = 0;
+	for (Point & p : mSalazar.corps())
+	{
+		if (compteur != 0) {
+			if (mSalazar.tete().x() == p.x() && mSalazar.tete().y() == p.y()) {
+				return false;
+			}
+		}
+		compteur++;
 	}
 
 	if (mSalazar.mange() == true)

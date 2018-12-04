@@ -16,6 +16,7 @@ private:
 	std::list<Point> mCorps;
 	char mForme;
 	bool mMange;
+	char mDirection;
 
 public:
 	Serpent();
@@ -29,6 +30,7 @@ public:
 	char forme();
 	std::list<Point> corps();
 	bool mange();
+	char direction();
 
 	//Setter
 	void setPosition(Point position);
@@ -37,7 +39,7 @@ public:
 	void setcouleur(ConsoleColor couleur);
 	void setforme(char forme);
 	void setMange(bool mange);
-
+	void setDirection(char direction);
 
 	//Fonction
 	void ajouterPoint(Point a);

@@ -52,8 +52,6 @@ void ActionJeu::obtenirClavier()
 	keyEvents.clear();
 
 	reader.read(keyEvents);
-	//mToucheClavier = 0;
-
 	
 
 	for (auto event : keyEvents) {
@@ -84,6 +82,14 @@ void ActionJeu::obtenirClavier()
 		else if (event.keyV() == char(66))			//Si touche b
 		{
 			mToucheClavier = 66;
+		}
+		else if (event.keyV() == char(81))			//Si touche q
+		{
+			mToucheClavier = 81;
+		}
+		else if (event.keyV() == char(80))			//Si touche p
+		{
+			mToucheClavier = 80;
 		}
 	}
 }
@@ -121,23 +127,39 @@ bool ActionJeu::traiter(double tempsEcoule)
 		mSalazar.bougeEnBas();
 		mSalazar.setDirection('B');
 	}
-	else if (mToucheClavier == 32)
-	{
-		mEtat = 1;
-	}
-	else if (mToucheClavier == 73)
-	{
-		mEtat = 2;
-	}
-	else if (mToucheClavier == 66)
-	{
-		mEtat = 0;
-	}
-
 
 	if (mSalazar.tete().x() <= 4 || mSalazar.tete().x() >= 55 || mSalazar.tete().y() <= 4 || mSalazar.tete().y() >= 55)
 	{
 		mEtat = -1; //Game Over
+		
+	}
+
+	if (mToucheClavier == 32)		//Espace Jouer
+	{
+		mEtat = 1;
+		mSalazar.retourEtatDebut();
+		mCompteur = 0;
+	}
+	else if (mToucheClavier == 73)		// I Instruction
+	{
+		mEtat = 2;
+	}
+	else if (mToucheClavier == 66) // b Retour Menu
+	{
+		mEtat = 0;
+		mSalazar.retourEtatDebut();
+		mCompteur = 0;
+
+	}
+	else if (mToucheClavier == 81) // q Quitter
+	{
+		return 0;
+
+	}
+	else if (mToucheClavier == 80) // p pause
+	{
+		mEtat = 5;
+
 	}
 
 	int compteurTemp = 0;
@@ -145,7 +167,7 @@ bool ActionJeu::traiter(double tempsEcoule)
 	{
 		if (compteurTemp != 0) {
 			if (mSalazar.tete().x() == p.x() && mSalazar.tete().y() == p.y()) {
-				return false;
+				mEtat = -1;
 			}
 		}
 		compteurTemp++;
@@ -162,12 +184,12 @@ bool ActionJeu::traiter(double tempsEcoule)
 		// 1 chance sur 5 d'avoir une pomme verte
 		mProbabilitePommeVerte = mPommeVerte.aleatoire(1, 5);
 		if (mProbabilitePommeVerte == 1) {
-			Point temp(mPommeVerte.aleatoire(6, 54), mPommeVerte.aleatoire(6, 54));
+			Point temp(mPommeVerte.aleatoire(5, 54), mPommeVerte.aleatoire(5, 54));
 			mPommeVerte.setPosition(temp);
 			mAfficherPommeVerte = true;
 		}
 		else {
-			Point temp(mPommeRouge.aleatoire(6, 54), mPommeRouge.aleatoire(6, 54));
+			Point temp(mPommeRouge.aleatoire(5, 54), mPommeRouge.aleatoire(5, 54));
 			mPommeRouge.setPosition(temp);
 			mAfficherPommeVerte = false;
 		}
@@ -190,50 +212,19 @@ void ActionJeu::afficherJeu()
 	{
 		surfaceJeu.afficherInstruction();
 	}
-
-	else
+	else // On joue!
 	{
-		ConsoleWriter & writer{ Console::getInstance().writer() };
-
-		writer.createImage("background");
-
-		size_t a{ 5 };
-		size_t b{ 50 };
-		size_t c{ 57 };
-		size_t d{ 16 };
-		size_t e{ 22 };
-
-		writer.image("background").fill(a, a, b, b, char(219), ConsoleColor::by + ConsoleColor::ty);
-		writer.image("background").fill(e, c, d, a, char(219), ConsoleColor::bw + ConsoleColor::tw);
-		writer.image("background").drawText(e + 1, c + 2, "Point: " + to_string(mCompteur), ConsoleColor::bw + ConsoleColor::tk, true);
-		writer.createImage("imageJeu");
-		writer.push("background", "imageJeu");
 
 		// dessiner pomme rouge ou pomme verte
-		if (mAfficherPommeVerte) {
-			writer.image("imageJeu").drawPoint(mPommeVerte.position().x(), mPommeVerte.position().y(), mPommeVerte.dessin(), mPommeVerte.couleur());
-		}
-		else {
-			writer.image("imageJeu").drawPoint(mPommeRouge.position().x(), mPommeRouge.position().y(), mPommeRouge.dessin(), mPommeRouge.couleur());
-		}
+		// if (mAfficherPommeVerte) {
+			// writer.image("imageJeu").drawPoint(mPommeVerte.position().x(), mPommeVerte.position().y(), mPommeVerte.dessin(), mPommeVerte.couleur());
+		// }
+		// else {
+			// writer.image("imageJeu").drawPoint(mPommeRouge.position().x(), mPommeRouge.position().y(), mPommeRouge.dessin(), mPommeRouge.couleur());
+		// }
 
-		// dessiner serpent
-		for (Point & p : mSalazar.corps())
-		{
-			writer.image("imageJeu").drawPoint(p.x(), p.y(), mSalazar.forme(), mSalazar.couleur());
-			writer.push("imageJeu");
-		}
-
-		if (partieEnCours == false)
-		{
-
-
-		}
-
+		surfaceJeu.afficherAirJeu(mSalazar, mPomme, mCompteur);
 	}
-
-	
-
 }
 
 int ActionJeu::compteur()

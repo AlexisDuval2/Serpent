@@ -40,6 +40,40 @@ size_t AireDeJeu::hauteurJouable()
 	return mHauteurJouable;
 }
 
+void AireDeJeu::afficherAirJeu(Serpent &s, Pomme &p, int compteur)
+{
+	ConsoleWriter & writer{ Console::getInstance().writer() };
+
+	writer.createImage("background");
+
+	size_t height{ 5 };
+	size_t py{ 57 };
+	size_t width{ 16 };
+	size_t px{ 22 };
+
+	string textePause{ "Pause (p)" };
+	string texteQuitter{ "Quitter (q)" };
+
+
+	writer.image("background").fill(x, y, mLargeurJouable, mHauteurJouable, char(219), ConsoleColor::by + ConsoleColor::ty);
+	writer.image("background").fill(px, py, width, height, char(219), ConsoleColor::bw + ConsoleColor::tw); // Carré Point
+	writer.image("background").drawText(px + 1, py + 2, "Point: " + to_string(compteur), ConsoleColor::bw + ConsoleColor::tk, true);
+
+	writer.image("background").drawText(x, py + 2, textePause, ConsoleColor::bk + ConsoleColor::tW, true);
+	writer.image("background").drawText(x+ mLargeurJouable- texteQuitter.size(), py + 2, texteQuitter, ConsoleColor::bk + ConsoleColor::tW, true);
+	writer.createImage("imageJeu");
+	writer.push("background", "imageJeu");
+
+	writer.image("imageJeu").drawPoint(p.position().x(), p.position().y(), p.dessin(), p.couleur());
+
+	for (Point & p : s.corps())
+	{
+		writer.image("imageJeu").drawPoint(p.x(), p.y(), s.forme(), s.couleur());
+		writer.push("imageJeu");
+	}
+
+}
+
 void AireDeJeu::afficherGameOver()
 {
 	ConsoleWriter & writer{ Console::getInstance().writer() };
@@ -48,9 +82,17 @@ void AireDeJeu::afficherGameOver()
 	size_t width{ 18 };
 	size_t heigth{ 5 };
 
+	string texte1{ "Retour Menu (b)" };
+	string texte2{ "Quitter (q))" };
+	string texte3{ "Rejouer (espace)" };
+
 	writer.createImage("finDePartie");
-	writer.image("finDePartie").fill(px, py, width, heigth, char(219), ConsoleColor::by + ConsoleColor::ty);
-	writer.image("finDePartie").drawText(px + 4, py + 2, "GAME OVER!", ConsoleColor::by + ConsoleColor::tk, true);
+	writer.image("finDePartie").fill(px, py, width, heigth, char(219), ConsoleColor::bb + ConsoleColor::tb);
+	writer.image("finDePartie").fill(px, py+7, width, heigth, char(219), ConsoleColor::bb + ConsoleColor::tb);
+	writer.image("finDePartie").drawText(px + 4, py + 2, "GAME OVER!", ConsoleColor::bb + ConsoleColor::tW, true);
+	writer.image("finDePartie").drawText(px + 2, py + 8, texte1, ConsoleColor::bb + ConsoleColor::tW, true);
+	writer.image("finDePartie").drawText(px + 4, py + 9, texte2, ConsoleColor::bb + ConsoleColor::tW, true);
+	writer.image("finDePartie").drawText(px + 1, py + 10, texte3, ConsoleColor::bb + ConsoleColor::tW, true);
 	writer.push("finDePartie");
 }
 

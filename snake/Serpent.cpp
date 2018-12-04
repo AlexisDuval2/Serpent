@@ -7,7 +7,7 @@ Serpent::Serpent()
 	mVitesse{ 1.0 },
 	mTete(15, 30),
 	mCorps{ mTete },
-	mCouleur{ ConsoleColor::bb + ConsoleColor::tg },
+	mCouleur{ ConsoleColor::bb + ConsoleColor::tC },
 	mForme{ char(219) },
 	mMange {false},
 	mDirection {'X'}
@@ -97,6 +97,20 @@ void Serpent::ajouterPoint(Point a)
 {
 	mCorps.push_back(a);
 
+}
+
+void Serpent::retourEtatDebut()
+{
+		Point tempo{ 15,30 };
+		mLongueur = 1;
+		mVitesse = 1.0;
+		mTete=tempo;
+		mCorps.clear();
+		mCorps.push_back(mTete);
+		mCouleur = ConsoleColor::bb + ConsoleColor::tC;
+		mForme = char(219);
+		mMange = false;
+		mDirection = 'X';
 }
 
 

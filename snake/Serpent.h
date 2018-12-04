@@ -44,11 +44,13 @@ public:
 
 	//Fonction
 	void ajouterPoint(Point a);
+	void retourEtatDebut();
 	//Bouge
 	void bougeAGauche();
 	void bougeADroite();
 	void bougeEnHaut();
 	void bougeEnBas();
+
 };
 
 #endif //SERPENT_H

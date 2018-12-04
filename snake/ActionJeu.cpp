@@ -47,8 +47,6 @@ void ActionJeu::obtenirClavier()
 	keyEvents.clear();
 
 	reader.read(keyEvents);
-	//mToucheClavier = 0;
-
 	
 
 	for (auto event : keyEvents) {
@@ -79,6 +77,14 @@ void ActionJeu::obtenirClavier()
 		else if (event.keyV() == char(66))			//Si touche b
 		{
 			mToucheClavier = 66;
+		}
+		else if (event.keyV() == char(81))			//Si touche q
+		{
+			mToucheClavier = 81;
+		}
+		else if (event.keyV() == char(80))			//Si touche p
+		{
+			mToucheClavier = 80;
 		}
 	}
 
@@ -116,31 +122,50 @@ bool ActionJeu::traiter(double tempsEcoule)
 		mSalazar.bougeEnBas();
 		mSalazar.setDirection('B');
 	}
-	else if (mToucheClavier == 32)
-	{
-		mEtat = 1;
-	}
-	else if (mToucheClavier == 73)
-	{
-		mEtat = 2;
-	}
-	else if (mToucheClavier == 66)
-	{
-		mEtat = 0;
-	}
-
 
 	if (mSalazar.tete().x() <= 4 || mSalazar.tete().x() >= 55 || mSalazar.tete().y() <= 4 || mSalazar.tete().y() >= 55)
 	{
 		mEtat = -1; //Game Over
+		
 	}
+
+	if (mToucheClavier == 32)		//Espace Jouer
+	{
+		mEtat = 1;
+		mSalazar.retourEtatDebut();
+		mCompteur = 0;
+	}
+	else if (mToucheClavier == 73)		// I Instruction
+	{
+		mEtat = 2;
+	}
+	else if (mToucheClavier == 66) // b Retour Menu
+	{
+		mEtat = 0;
+		mSalazar.retourEtatDebut();
+		mCompteur = 0;
+
+	}
+	else if (mToucheClavier == 81) // q Quitter
+	{
+		return 0;
+
+	}
+	else if (mToucheClavier == 80) // p pause
+	{
+		mEtat = 5;
+
+	}
+
+
+
 
 	int compteur = 0;
 	for (Point & p : mSalazar.corps())
 	{
 		if (compteur != 0) {
 			if (mSalazar.tete().x() == p.x() && mSalazar.tete().y() == p.y()) {
-				return false;
+				mEtat = -1;
 			}
 		}
 		compteur++;
@@ -152,7 +177,7 @@ bool ActionJeu::traiter(double tempsEcoule)
 		mSalazar.ajouterPoint(mPomme.position());
 		mSalazar.setMange(false);
 
-		Point temp(mPomme.aleatoire(5, 55), mPomme.aleatoire(5, 55));
+		Point temp(mPomme.aleatoire(5, 54), mPomme.aleatoire(5, 54));
 		mPomme.setPosition(temp);
 	}
 
@@ -177,45 +202,9 @@ void ActionJeu::afficherJeu()
 	{
 		surfaceJeu.afficherInstruction();
 	}
-
-	else
+	else // On joue!
 	{
-		ConsoleWriter & writer{ Console::getInstance().writer() };
-
-
-
-		writer.createImage("background");
-
-		size_t a{ 5 };
-		size_t b{ 50 };
-		size_t c{ 57 };
-		size_t d{ 16 };
-		size_t e{ 22 };
-
-
-
-		writer.image("background").fill(a, a, b, b, char(219), ConsoleColor::by + ConsoleColor::ty);
-		writer.image("background").fill(e, c, d, a, char(219), ConsoleColor::bw + ConsoleColor::tw);
-		writer.image("background").drawText(e + 1, c + 2, "Point: " + to_string(mCompteur), ConsoleColor::bw + ConsoleColor::tk, true);
-		writer.createImage("imageJeu");
-		writer.push("background", "imageJeu");
-
-		writer.image("imageJeu").drawPoint(mPomme.position().x(), mPomme.position().y(), mPomme.dessin(), mPomme.couleur());
-
-		for (Point & p : mSalazar.corps())
-		{
-			writer.image("imageJeu").drawPoint(p.x(), p.y(), mSalazar.forme(), mSalazar.couleur());
-			writer.push("imageJeu");
-		}
-
-
-
-		if (partieEnCours == false)
-		{
-
-
-		}
-
+		surfaceJeu.afficherAirJeu(mSalazar, mPomme, mCompteur);
 	}
 
 	

@@ -3,6 +3,8 @@
 
 #include"ConsoleWriter.h"
 #include"AireDeJeu.h"
+#include"Serpent.h"
+#include"Pomme.h"
 
 class AireDeJeu
 {
@@ -15,7 +17,7 @@ public:
 	size_t largeurJouable();
 	size_t hauteurJouable();
 
-	//void afficherAirJeu();
+	void afficherAirJeu(Serpent &s, Pomme &p, int compteur);
 	void afficherGameOver();
 	void afficherMenuEntre();
 	void afficherInstruction();

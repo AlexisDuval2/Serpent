@@ -109,8 +109,8 @@ void AireDeJeu::afficherMenuEntre()
 	ConsoleWriter & writer{ Console::getInstance().writer() };
 
 	string text1{ "Bienvenue" };
-	string text2{ "Jouer (Espace)" };
-	string text3{ "Instruction (i)" };
+	string text2{ "Jouer (espace)" };
+	string text3{ "Instructions (i)" };
 	string text4{ "Quitter (q)" };
 	size_t xTexte = (mLargeur - text1.size()) / 2;
 	size_t yTexte = mHauteurJouable / 2;
@@ -131,19 +131,19 @@ void AireDeJeu::afficherInstruction()
 {
 	ConsoleWriter & writer{ Console::getInstance().writer() };
 
-	string texte1{ "Instruction" };
-	string texte2{ "1. Utiliser les fl""\x8A""ches pour d\x82placer Salazar" };
-	string texte3{ "2. Manger les pommes pour récolt\x82 des points" };
+	string texte1{ "Instructions" };
+	string texte2{ "1. Utiliser les fl""\x8A""ches pour d""\x82""placer Salazar" };
+	string texte3{ "2. Manger les pommes pour r""\x82""colter des points" };
 	string texte33{ "   et devenir plus grand" };
 	string texte4{ "3. Attention! Vous ne pouvez pas toucher les" };
-	string texte44{ "   limites du carr\x82 de sable!" };
+	string texte44{ "   limites du carr""\x82"" de sable!" };
 	string texte5{ "4. Attention! Vous ne pouvez pas" };
-	string texte55{ "   vous manger vous m\x88me" };
-	string texte6{ "5. A tout moment appuyer sur Q" };
+	string texte55{ "   vous manger vous m""\x88""me" };
+	string texte6{ "5. A tout moment appuyer sur \'q\'" };
 	string texte66{ "   pour quitter la partie" };
 
-	string texteRetour{ "Retour (B)" };
-	string texteJouer{ "Jouer (Espace)" };
+	string texteRetour{ "Retour (b)" };
+	string texteJouer{ "Jouer (espace)" };
 
 	size_t yTexte{ mHauteurJouable / 2 };
 	size_t xTexte{ 8 };
